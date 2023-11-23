@@ -1,0 +1,56 @@
+{
+    "root": [
+        {
+            "id": 1,
+            "lastname": "dsfsd",
+            "firstname": "fdsfds",
+            "patronymic": "fdsfds",
+            "email": "fsd@dew.fd",
+            "phone": 9999999999,
+            "eduState": 1,
+            "gomadi": null,
+            "year": 2025,
+            "courses": true,
+            "agree": true,
+            "subscribe": true,
+            "created_at": "2023-10-12T12:30:51.000000Z",
+            "updated_at": "2023-10-12T12:30:51.000000Z",
+            "deleted_at": null
+        },
+        {
+            "id": 2,
+            "lastname": "qweqe",
+            "firstname": "ewqeqw",
+            "patronymic": "eqweqw",
+            "email": "eqweqw@fd.df",
+            "phone": 9999999999,
+            "eduState": 1,
+            "gomadi": null,
+            "year": 2026,
+            "courses": false,
+            "agree": true,
+            "subscribe": false,
+            "created_at": "2023-10-12T14:14:59.000000Z",
+            "updated_at": "2023-10-12T14:14:59.000000Z",
+            "deleted_at": null
+        },
+        {
+            "id": 3,
+            "lastname": "ewsqdfewf",
+            "firstname": "fewfew",
+            "patronymic": "fewfew",
+            "email": "fewewf@ewfd.com",
+            "phone": 8888888888,
+            "eduState": 2,
+            "gomadi": null,
+            "year": 2027,
+            "courses": true,
+            "agree": true,
+            "subscribe": true,
+            "created_at": "2023-10-20T06:13:44.000000Z",
+            "updated_at": "2023-10-20T06:13:44.000000Z",
+            "deleted_at": null
+        }
+    ]
+    
+}
