@@ -11,7 +11,7 @@
             "gomadi": null,
             "year": 2025,
             "courses": true,
-            "agree": true,
+            "agree": false,
             "subscribe": true,
             "created_at": "2023-10-12T12:30:51.000000Z",
             "updated_at": "2023-10-12T12:30:51.000000Z",
