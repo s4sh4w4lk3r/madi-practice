@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div>
         <div>
             <input class="add-button" type="button" value="Добавить">
@@ -40,21 +40,36 @@
             <tbody>
                 <template v-for="item in items">
                     <tr>
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.lastname }}</td>
-                        <td>{{ item.firstname }}</td>
-                        <td>{{ item.patronymic }}</td>
-                        <td>{{ item.email }}</td>
-                        <td>{{ item.phone }}</td>
-                        <td>{{ item.eduState }}</td>
-                        <td>{{ item.gomadi }}</td>
-                        <td>{{ item.year }}</td>
-                        <td>{{ item.courses }}</td>
-                        <td>{{ item.agree }}</td>
-                        <td>{{ item.subscribe }}</td>
-                        <td>{{ item.created_at }}</td>
-                        <td>{{ item.updated_at }}</td>
-                        <td>{{ item.deleted_at }}</td>
+                        <td contenteditable>{{ item.id }}</td>
+                        <td contenteditable>{{ item.lastname }}</td>
+                        <td contenteditable>{{ item.firstname }}</td>
+                        <td contenteditable>{{ item.patronymic }}</td>
+                        <td contenteditable>{{ item.email }}</td>
+                        <td contenteditable>{{ item.phone }}</td>
+                        <td contenteditable>
+                            <p v-if="item.eduState === 0">Школа</p>
+                            <p v-if="item.eduState === 1">Колледж</p>
+                            <p v-if="item.eduState === 2">ВУЗ</p>
+                        </td>
+                        <td contenteditable>
+                            <p v-if="item.gomadi === null">Неизв.</p>
+                        </td>
+                        <td contenteditable>{{ item.year }}</td>
+                        <td contenteditable>
+                            <p v-if="item.courses === true">Да</p>
+                            <p v-else>Нет</p>
+                        </td>
+                        <td contenteditable>
+                            <p v-if="item.agree === true">Да</p>
+                            <p v-else>Нет</p>
+                        </td>
+                        <td contenteditable>
+                            <p v-if="item.subscribe === true">Да</p>
+                            <p v-else>Нет</p>
+                        </td>
+                        <td contenteditable>{{ new Date( Date.parse(item.created_at)).toLocaleString("RU-ru") }} </td>
+                        <td contenteditable>{{ new Date( Date.parse(item.updated_at)).toLocaleString("RU-ru") }}</td>
+                        <td contenteditable>{{ new Date( Date.parse(item.deleted_at)).toLocaleString("RU-ru") }}</td>
                     </tr>
                 </template>
             </tbody>
@@ -71,24 +86,8 @@ export default {
         }
     },
     mounted() {
-        json.root.forEach(element => {
-            if (element.courses === true) { element.courses = "Да"; }
-            else { element.courses = "Нет"; }
-
-            if (element.agree === true) { element.agree = "Да"; }
-            else { element.agree = "Нет"; }
-
-            if (element.subscribe === true) { element.subscribe = "Да"; }
-            else { element.subscribe = "Нет"; }
-
-            if (element.gomadi === null) { element.gomadi = "Неизв."; }
-
-            if (element.eduState === 0) { element.eduState = "Школа"; }
-            if (element.eduState === 1) { element.eduState = "Колледж"; }
-            if (element.eduState === 2) { element.eduState = "Вуз"; }
-
-            this.items = json.root;
-        });
+        
+        this.items = json.root;
     }
 }
 </script>
