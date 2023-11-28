@@ -1,0 +1,44 @@
+{
+    "languages": [
+        {
+            "name": "Python",
+            "percentage": 29.48
+        },
+        {
+            "name": "Java",
+            "percentage": 17.18
+        },
+        {
+            "name": "JavaScript",
+            "percentage": 9.14
+        },
+        {
+            "name": "C#",
+            "percentage": 6.94
+        },
+        {
+            "name": "PHP",
+            "percentage": 6.49
+        },
+        {
+            "name": "C/C++",
+            "percentage": 6.49
+        },
+        {
+            "name": "R",
+            "percentage": 3.59
+        },
+        {
+            "name": "TypeScript",
+            "percentage": 2.18
+        },
+        {
+            "name": "Swift",
+            "percentage": 2.1
+        },
+        {
+            "name": "Objective-C",
+            "percentage": 2.06
+        }
+    ]
+}

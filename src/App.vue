@@ -1,11 +1,11 @@
-<script setup>
-import JsonTable from './components/JsonTable.vue'
-</script>
-
 <template>
-  <JsonTable/>
+  <BarChart />
 </template>
 
-<style scoped>
-
-</style>
+<script>
+import BarChart from './components/LanguageStats.vue';
+export default {
+  name: 'App',
+  components: { BarChart }
+}
+</script>
