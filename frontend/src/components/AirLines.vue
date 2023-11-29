@@ -30,6 +30,7 @@ export default {
             }
 
             axios.post("http://localhost:5111/airlines/insert", dto);
+            alert("OK");
         }
     }
 }
