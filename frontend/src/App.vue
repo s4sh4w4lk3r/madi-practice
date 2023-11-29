@@ -1,11 +1,7 @@
 <template>
-  <BarChart />
+  <AirLines />
 </template>
 
-<script>
-import BarChart from './components/LanguageStats.vue';
-export default {
-  name: 'App',
-  components: { BarChart }
-}
+<script setup>
+import AirLines from "./components/AirLines.vue";
 </script>
