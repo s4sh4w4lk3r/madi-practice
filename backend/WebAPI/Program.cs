@@ -1,4 +1,6 @@
 using Repository;
+using WebAPI.Services;
+using static System.Net.WebRequestMethods;
 
 namespace backend
 {
@@ -10,14 +12,16 @@ namespace backend
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<MadiContext>();
+            builder.Services.AddScoped<AirlineService>();
             builder.Services.AddCors();
 
             var app = builder.Build();
 
             app.UseCors(builder => builder
-     .AllowAnyOrigin()
-     .AllowAnyMethod()
-     .AllowAnyHeader());
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
             app.MapControllers();
 
             app.Run();
