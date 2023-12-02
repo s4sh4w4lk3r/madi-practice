@@ -1,5 +1,4 @@
 <template>
-
     <table id="mainTable">
         <thead>
             <tr>
@@ -15,8 +14,8 @@
                 <td contenteditable>{{ item.id }}</td>
                 <td contenteditable>{{ item.name }}</td>
                 <td contenteditable>{{ item.airline }}</td>
-                <td contenteditable>{{ item.createdAt }}</td>
-                <td contenteditable>{{ item.updatedAt }}</td>
+                <td contenteditable>{{ new Date(Date.parse(item.createdAt)).toLocaleString("RU-ru") }}</td>
+                <td contenteditable>{{ new Date(Date.parse(item.updatedAt)).toLocaleString("RU-ru") }}</td>
             </tr>
         </tbody>
     </table>
@@ -27,7 +26,7 @@
             <br>
             <input v-model="airline" type="text" clas="airline-input" placeholder="Название авиакомпании">
             <br>
-            <button @click="fetch">Загрузить из бд</button>
+            <button @click="load">Загрузить из бд</button>
             <br>
             <button @click="save">Добавить</button>
         </div>
@@ -35,9 +34,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
-
+import airlinesApi from "../api/airlinesApi"
 
 export default {
     data() {
@@ -52,19 +49,8 @@ export default {
     },
 
     methods: {
-        async save() {
-            const dto = {
-                Flight: this.flight,
-                Airline: this.airline
-            }
-
-            await axios.post("http://localhost:5111/airlines/insert", dto);
-            alert("OK");
-        },
-
-        async fetch() {
-            this.airlineArray = (await axios.get("http://localhost:5111/airlines/get")).data;
-        }
+        save: airlinesApi.save,
+        load: airlinesApi.load
     }
 }
 </script>

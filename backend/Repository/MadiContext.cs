@@ -33,7 +33,7 @@ public partial class MadiContext() : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=one10;User Id=postgres;Password=root;");
+        => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=one10;User Id=root;Password=root;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
