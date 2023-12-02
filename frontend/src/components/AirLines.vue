@@ -31,6 +31,8 @@
             <button @click="load">Загрузить из бд</button>
             <br>
             <button @click="save">Добавить</button>
+            <!-- <br>
+            <button @click="save">Отправить изменения</button> -->
         </div>
     </div>
 </template>
@@ -43,7 +45,7 @@ export default {
         return {
             flight: "",
             airline: "",
-            airlineArray: null
+            airlineArray: null,
         }
     },
 
@@ -57,7 +59,7 @@ export default {
             this.flight = "";
             this.airline = "";
         },
-        
+
         async load(){
             this.airlineArray = await airlinesApi.load();
             return Promise.resolve();

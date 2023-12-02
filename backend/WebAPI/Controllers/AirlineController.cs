@@ -53,8 +53,8 @@ namespace WebAPI.Controllers
             return Ok(serviceResult);
         }
 
-        [HttpPost, Route("update")]
-        public async Task<IActionResult> Update(AirLineUpdateDto airLineUpdateDto)
+        [HttpPatch, Route("update")]
+        public async Task<IActionResult> Update([FromBody] AirLineUpdateDto airLineUpdateDto)
         {
             if (airLineUpdateDto.Id == default || string.IsNullOrWhiteSpace(airLineUpdateDto.Flight) || string.IsNullOrWhiteSpace(airLineUpdateDto.Airline))
             {

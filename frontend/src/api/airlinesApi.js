@@ -4,10 +4,7 @@ const host = "http://localhost:5111";
 
 export default {
     async save(flightName, airlineName) {
-        const dto = {
-            Flight: flightName,
-            Airline: airlineName
-        }
+        const dto = { Flight: flightName, Airline: airlineName }
 
         try {
             await axios.post(`${host}/airlines/insert`, dto);
@@ -31,7 +28,16 @@ export default {
             const result = await axios.delete(`${host}/airlines/delete?id=${id}`);
             if (result.status !== 200) console.error(result.data);
         } catch (error) {
-            console.error(error)
+            console.error(error);
+        }
+    },
+
+    async update(id, flightName, airlineName) {
+        const dto = { Id: id, Flight: flightName, Airline: airlineName };
+
+        const result = await axios.patch(`${host}/airlines/update`, dto);
+        if (result.status !== 200) {
+            console.error(result.data);
         }
     }
 }
