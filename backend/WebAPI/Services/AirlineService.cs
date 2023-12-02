@@ -7,6 +7,10 @@ namespace WebAPI.Services
     {
         public async Task<ServiceResult> InsertAsync(AirLine airLine)
         {
+            if (string.IsNullOrWhiteSpace(airLine.Airline) || string.IsNullOrWhiteSpace(airLine.Name))
+            {
+                return ServiceResult.Fail("Некорректные данные");
+            }
             madiContext.TestTables.Add(airLine);
             await madiContext.SaveChangesAsync();
             return ServiceResult.Ok("Полет добавился в бд.");

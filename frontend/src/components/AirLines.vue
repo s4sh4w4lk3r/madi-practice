@@ -7,6 +7,7 @@
                 <th>Авиакомпания</th>
                 <th>Добавлен в </th>
                 <th>Обновлен в</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@
                 <td contenteditable>{{ item.airline }}</td>
                 <td contenteditable>{{ new Date(Date.parse(item.createdAt)).toLocaleString("RU-ru") }}</td>
                 <td contenteditable>{{ new Date(Date.parse(item.updatedAt)).toLocaleString("RU-ru") }}</td>
+                <td> <input type="button" @click="remove(item.id)" value="X"></td>
             </tr>
         </tbody>
     </table>
@@ -49,8 +51,22 @@ export default {
     },
 
     methods: {
-        save: airlinesApi.save,
-        load: airlinesApi.load
+        async save(){
+            await airlinesApi.save.call(this, this.flight, this.airline);
+            await this.load();
+            this.flight = "";
+            this.airline = "";
+        },
+        
+        async load(){
+            this.airlineArray = await airlinesApi.load();
+            return Promise.resolve();
+        },
+
+        async remove(id) {
+            await airlinesApi.deleteById(id);
+            this.load();
+        }
     }
 }
 </script>

@@ -37,8 +37,8 @@ namespace WebAPI.Controllers
 
         }
 
-        [HttpPost, Route("delete")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete, Route("delete")]
+        public async Task<IActionResult> Delete([FromQuery]int id)
         {
             if (id == default)
             {

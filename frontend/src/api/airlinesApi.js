@@ -1,14 +1,16 @@
 import axios from "axios";
 
+const host = "http://localhost:5111";
+
 export default {
-    async save() {
+    async save(flightName, airlineName) {
         const dto = {
-            Flight: this.flight,
-            Airline: this.airline
+            Flight: flightName,
+            Airline: airlineName
         }
 
         try {
-            await axios.post("http://localhost:5111/airlines/insert", dto);
+            await axios.post(`${host}/airlines/insert`, dto);
             alert("OK");
         } catch (error) {
             console.error(error);
@@ -17,10 +19,19 @@ export default {
 
     async load() {
         try {
-            this.airlineArray = (await axios.get("http://localhost:5111/airlines/get")).data;
+            return (await axios.get(`${host}/airlines/get`)).data;
 
         } catch (error) {
             console.error(error);
+        }
+    },
+
+    async deleteById(id) {
+        try {
+            const result = await axios.delete(`${host}/airlines/delete?id=${id}`);
+            if (result.status !== 200) console.error(result.data);
+        } catch (error) {
+            console.error(error)
         }
     }
 }
