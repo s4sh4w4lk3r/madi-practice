@@ -8,16 +8,18 @@
                 <th>Добавлен в </th>
                 <th>Обновлен в</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="item in airlineArray">
-                <td contenteditable>{{ item.id }}</td>
-                <td contenteditable>{{ item.name }}</td>
-                <td contenteditable>{{ item.airline }}</td>
-                <td contenteditable>{{ new Date(Date.parse(item.createdAt)).toLocaleString("RU-ru") }}</td>
-                <td contenteditable>{{ new Date(Date.parse(item.updatedAt)).toLocaleString("RU-ru") }}</td>
-                <td> <input type="button" @click="remove(item.id)" value="X"></td>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.airline }}</td>
+                <td>{{ new Date(Date.parse(item.createdAt)).toLocaleString("RU-ru") }}</td>
+                <td>{{ new Date(Date.parse(item.updatedAt)).toLocaleString("RU-ru") }}</td>
+                <td> <input type="button" @click="remove(item.id)" value="❌"></td>
+                <td> <input type="button" @click="fillFields(item.id, item.name, item.airline)" value="🔧"></td>
             </tr>
         </tbody>
     </table>
@@ -28,11 +30,11 @@
             <br>
             <input v-model="airline" type="text" clas="airline-input" placeholder="Название авиакомпании">
             <br>
-            <button @click="load">Загрузить из бд</button>
+            <button id="loadBtn" @click="load">Загрузить из бд</button>
             <br>
-            <button @click="save">Добавить</button>
-            <!-- <br>
-            <button @click="save">Отправить изменения</button> -->
+            <button id="saveBtn" @click="save">Добавить в базу данных</button>
+            <br>
+            <button id="updateBtn" @click="sendUpdates">Сохранить изменения</button>
         </div>
     </div>
 </template>
@@ -46,6 +48,7 @@ export default {
             flight: "",
             airline: "",
             airlineArray: null,
+            idToUpdate: 0
         }
     },
 
@@ -53,14 +56,14 @@ export default {
     },
 
     methods: {
-        async save(){
+        async save() {
             await airlinesApi.save.call(this, this.flight, this.airline);
             await this.load();
             this.flight = "";
             this.airline = "";
         },
 
-        async load(){
+        async load() {
             this.airlineArray = await airlinesApi.load();
             return Promise.resolve();
         },
@@ -68,6 +71,26 @@ export default {
         async remove(id) {
             await airlinesApi.deleteById(id);
             this.load();
+        },
+
+        async fillFields(id, flightName, airlineName){
+            this.idToUpdate = id;
+            this.flight = flightName;
+            this.airline = airlineName;
+            document.getElementById("saveBtn").style.visibility = "hidden";
+            document.getElementById("loadBtn").style.visibility = "hidden";
+            document.getElementById("updateBtn").style.visibility = "visible";
+
+        },
+
+        async sendUpdates(){
+            await airlinesApi.update(this.idToUpdate, this.flight, this.airline);
+            this.flight = "";
+            this.airline = "";
+            document.getElementById("saveBtn").style.visibility = "visible";
+            document.getElementById("loadBtn").style.visibility = "visible";
+            document.getElementById("updateBtn").style.visibility = "hidden";
+            await this.load();
         }
     }
 }
