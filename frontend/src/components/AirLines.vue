@@ -73,7 +73,7 @@ export default {
             this.load();
         },
 
-        async fillFields(id, flightName, airlineName){
+        async fillFields(id, flightName, airlineName) {
             this.idToUpdate = id;
             this.flight = flightName;
             this.airline = airlineName;
@@ -83,7 +83,7 @@ export default {
 
         },
 
-        async sendUpdates(){
+        async sendUpdates() {
             await airlinesApi.update(this.idToUpdate, this.flight, this.airline);
             this.flight = "";
             this.airline = "";
@@ -95,3 +95,48 @@ export default {
     }
 }
 </script>
+
+<style>
+table,
+th,
+td {
+    border: 1px solid;
+}
+
+table {
+    width: 65%;
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #423733;
+}
+
+body {
+    background-color: #302828;
+    color: darksalmon;
+}
+
+button{
+    background-color: #34221b;
+    color: darksalmon;
+    border-radius: 9px;
+    margin-top: 5px;
+}
+
+input[type="text"]{
+    background-color: #7c6666;
+    color: #e9967a;
+    margin-top: 5px;
+}
+
+::placeholder {
+  color: #ffaf86;
+  opacity: 1; /* Firefox */
+}
+</style>
