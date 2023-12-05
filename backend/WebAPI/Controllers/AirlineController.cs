@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
         [HttpGet, Route("get")]
         public async Task<IActionResult> GetAirlines()
         {
-            return Ok(await airlineService.SelectAsync().ToListAsync());
+            return Ok(await airlineService.GetIQueryable().ToListAsync());
         }
 
         [HttpPost, Route("insert")]
@@ -75,6 +75,20 @@ namespace WebAPI.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpGet, Route("export")]
+        public async Task<IActionResult> Export()
+        {
+            var stream = (await airlineService.GetExcelAsync(airlineService.GetIQueryable().ToList())).Value;
+            if (stream is null)
+            {
+                return BadRequest("Гуляй.");
+            }
+            stream.Seek(0, SeekOrigin.Begin);
+            string fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            string fileName = $"База от {DateTime.UtcNow}.xlsx";
+            return File(stream, fileType, fileName);
         }
 
         public record AirLineInsertDto(string Flight, string Airline);
