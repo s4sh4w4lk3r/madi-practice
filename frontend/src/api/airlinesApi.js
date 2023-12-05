@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://localhost:5111";
+export const host = "http://localhost:5111";
 
 export default {
     async save(flightName, airlineName) {

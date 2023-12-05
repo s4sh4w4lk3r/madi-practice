@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost, Route("insert")]
-        public async Task<IActionResult> GetAirlines(AirLineInsertDto airLineDto)
+        public async Task<IActionResult> InsertAirlines(AirLineInsertDto airLineDto)
         {
             var createdAt = DateTime.UtcNow;
             createdAt = DateTime.SpecifyKind(createdAt, DateTimeKind.Unspecified);
