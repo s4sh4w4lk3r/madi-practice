@@ -306,7 +306,7 @@ public partial class MadiContext() : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("timestamp(0) without time zone")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Name)
+            entity.Property(e => e.Flight)
                 .HasMaxLength(255)
                 .HasColumnName("name");
             entity.Property(e => e.UpdatedAt)

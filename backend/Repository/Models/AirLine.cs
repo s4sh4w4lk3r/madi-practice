@@ -7,7 +7,7 @@ public partial class AirLine
 {
     public long Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string Flight { get; set; } = null!;
 
     public string Airline { get; set; } = null!;
 

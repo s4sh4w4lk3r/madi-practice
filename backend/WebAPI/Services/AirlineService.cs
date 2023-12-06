@@ -7,7 +7,7 @@ namespace WebAPI.Services
     {
         public async Task<ServiceResult> InsertAsync(AirLine airLine)
         {
-            if (string.IsNullOrWhiteSpace(airLine.Airline) || string.IsNullOrWhiteSpace(airLine.Name))
+            if (string.IsNullOrWhiteSpace(airLine.Airline) || string.IsNullOrWhiteSpace(airLine.Flight))
             {
                 return ServiceResult.Fail("Некорректные данные");
             }
@@ -43,7 +43,7 @@ namespace WebAPI.Services
             updatedAt = DateTime.SpecifyKind(updatedAt, DateTimeKind.Unspecified);
 
             trackedAirline.Airline = airLine.Airline;
-            trackedAirline.Name = airLine.Name;
+            trackedAirline.Flight = airLine.Flight;
             trackedAirline.UpdatedAt = updatedAt;
 
             await madiContext.SaveChangesAsync();

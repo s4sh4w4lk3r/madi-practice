@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
             var airLine = new AirLine()
             {
                 Airline = airLineDto.Airline,
-                Name = airLineDto.Flight,
+                Flight = airLineDto.Flight,
                 CreatedAt = createdAt,
                 Id = new Random().Next(1000, int.MaxValue)
             };
@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
             var airline = new AirLine()
             {
                 Airline = airLineUpdateDto.Airline,
-                Name = airLineUpdateDto.Flight,
+                Flight = airLineUpdateDto.Flight,
                 Id = airLineUpdateDto.Id,
             };
 
