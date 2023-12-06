@@ -35,12 +35,14 @@
             <button id="saveBtn" @click="save">Добавить в базу данных</button>
             <br>
             <button id="updateBtn" @click="sendUpdates">Сохранить изменения</button>
+            <br>
+            <button id="exportBtn" @click="getExcel">Экспорт в Excel</button>
         </div>
     </div>
 </template>
 
 <script>
-import airlinesApi from "../api/airlinesApi"
+import airlinesApi, {host as hostname} from "../api/airlinesApi"
 
 export default {
     data() {
@@ -91,6 +93,10 @@ export default {
             document.getElementById("loadBtn").style.visibility = "visible";
             document.getElementById("updateBtn").style.visibility = "hidden";
             await this.load();
+        },
+
+        getExcel(){
+            window.open(`${hostname }/airlines/export/`, "_blank");
         }
     }
 }

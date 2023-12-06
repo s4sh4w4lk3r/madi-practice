@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MiniExcelLibs;
 using Repository;
 
 namespace WebAPI.Services
@@ -16,7 +17,7 @@ namespace WebAPI.Services
             return ServiceResult.Ok("Полет добавился в бд.");
         }
 
-        public IQueryable<AirLine> SelectAsync() => madiContext.TestTables.AsQueryable();
+        public IQueryable<AirLine> GetIQueryable() => madiContext.TestTables.AsQueryable();
 
         public async Task<ServiceResult> DeleteAsync(int airlineId)
         {
@@ -48,6 +49,13 @@ namespace WebAPI.Services
 
             await madiContext.SaveChangesAsync();
             return ServiceResult.Ok("Обновлен.");
+        }
+
+        public async Task<ServiceResult<MemoryStream>> GetExcelAsync(IEnumerable<AirLine> airLines)
+        {
+            var stream = new MemoryStream();
+            await stream.SaveAsAsync(airLines);
+            return ServiceResult<MemoryStream>.Ok("Поток с экселем записан", stream);
         }
     }
 }
