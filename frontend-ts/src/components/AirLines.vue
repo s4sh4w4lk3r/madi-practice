@@ -40,19 +40,18 @@
 </template>
 
 <script lang="ts">
-import airlinesApi, {Airline} from "../api/airlinesApi"
+import airlinesApi, { Airline } from "../api/airlinesApi"
 
+type DataReturnType =  {flight:string, airline: string, airlineArray: Airline[], idToUpdate: number};
 
 export default {
-    data() {
-        const da : {flight:string, airline: string, airlineArray: Airline[], idToUpdate: number} = {
+    data(): DataReturnType {
+        return {
             flight: "",
             airline: "",
             airlineArray: [],
-            idToUpdate : 0
+            idToUpdate: 0
         };
-
-        return da;
     },
 
     mounted() {
@@ -69,7 +68,6 @@ export default {
         async load() {
             const result = await airlinesApi.load() as Airline[];
             this.airlineArray = result;
-            return Promise.resolve();
         },
 
         async remove(id: number) {
@@ -77,14 +75,14 @@ export default {
             this.load();
         },
 
-        async fillFields(id: number, flightName: string, airlineName: string) {
+        fillFields(id: number, flightName: string, airlineName: string) {
             this.idToUpdate = id;
             this.flight = flightName;
             this.airline = airlineName;
+            // Конечно не оч хорошо что оставил здесь воскл. знак.
             document.getElementById("saveBtn")!.style.visibility = "hidden";
             document.getElementById("loadBtn")!.style.visibility = "hidden";
             document.getElementById("updateBtn")!.style.visibility = "visible";
-
         },
 
         async sendUpdates() {
