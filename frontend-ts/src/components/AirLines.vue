@@ -28,7 +28,7 @@
         <div>
             <input v-model="flight" type="text" class="flight-input" placeholder="Название рейса">
             <br>
-            <input v-model="airline" type="text" clas="airline-input" placeholder="Название авиакомпании">
+            <input v-model="airline" type="text" class="airline-input" placeholder="Название авиакомпании">
             <br>
             <button id="loadBtn" @click="load">Загрузить из бд</button>
             <br>
