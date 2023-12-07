@@ -3,11 +3,10 @@ import axios from "axios";
 const host = "http://localhost:5111";
 
 export class Airline {
-
-    constructor(public id: number, public flight: string, public airline: string, public createdAt?: string, public updatedAt?: string) { }
+    constructor(public readonly id: number, public flight: string, public airline: string, public createdAt?: string, public updatedAt?: string, public updateRequired: boolean = true) { }
 }
 
-export default {
+export const airlinesApi = {
     async save(flightName: string, airlineName: string) {
         const dto = { Flight: flightName, Airline: airlineName }
 
@@ -19,13 +18,15 @@ export default {
         }
     },
 
-    async load() {
+    async getAirlines() {
         try {
-            const result = (await axios.get(`${host}/airlines/get`)).data as Airline[];
-            return result;
+            const result: Airline[] = (await axios.get(`${host}/airlines/get`)).data as Airline[];
+            result.forEach(e => e.updateRequired = false)
+            return Promise.resolve(result);
 
         } catch (error) {
             console.error(error);
+            return Promise.reject(error);
         }
     },
 
@@ -38,10 +39,26 @@ export default {
         }
     },
 
-    async update(id: number, flightName: string, airlineName: string) {
+    async updateOne(id: number, flightName: string, airlineName: string) {
         const dto = { Id: id, Flight: flightName, Airline: airlineName };
 
         const result = await axios.patch(`${host}/airlines/update`, dto);
+        if (result.status !== 200) {
+            console.error(result.data);
+        }
+    },
+
+
+    async updateMany(airlines: Airline[]) {
+
+        airlines = airlines.filter(e => e.updateRequired === true);
+        const airlinesDtos = airlines.map(e => ({
+            Id: e.id,
+            Flight: e.flight,
+            Airline: e.airline
+        }));
+
+        const result = await axios.patch(`${host}/airlines/updatemany`, airlinesDtos);
         if (result.status !== 200) {
             console.error(result.data);
         }

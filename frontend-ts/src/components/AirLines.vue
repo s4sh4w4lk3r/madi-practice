@@ -18,8 +18,8 @@
                 <td>{{ item.airline }}</td>
                 <td>{{ new Date(Date.parse(item.createdAt!)).toLocaleString("RU-ru") }}</td>
                 <td>{{ new Date(Date.parse(item.updatedAt!)).toLocaleString("RU-ru") }}</td>
-                <td> <input type="button" @click="remove(item.id)" value="❌"></td>
-                <td> <input type="button" @click="fillFields(item.id, item.flight, item.airline)" value="🔧"></td>
+                <td> <input type="button" @click="remove(item.id)" value="❌" required></td>
+                <td> <input type="button" @click="fillFields(item)" value="🔧" required></td>
             </tr>
         </tbody>
     </table>
@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import airlinesApi, { Airline } from "../api/airlinesApi"
+import { Airline, airlinesApi } from "../api/airlinesApi"
 
 type DataReturnType =  {flight:string, airline: string, airlineArray: Airline[], idToUpdate: number};
 
@@ -66,7 +66,7 @@ export default {
         },
 
         async load() {
-            const result = await airlinesApi.load() as Airline[];
+            const result = await airlinesApi.getAirlines();
             this.airlineArray = result;
         },
 
@@ -75,10 +75,10 @@ export default {
             this.load();
         },
 
-        fillFields(id: number, flightName: string, airlineName: string) {
-            this.idToUpdate = id;
-            this.flight = flightName;
-            this.airline = airlineName;
+        fillFields(airline: Airline) {
+            this.idToUpdate = airline.id;
+            this.flight = airline.flight;
+            this.airline = airline.airline;
             // Конечно не оч хорошо что оставил здесь воскл. знак.
             document.getElementById("saveBtn")!.style.visibility = "hidden";
             document.getElementById("loadBtn")!.style.visibility = "hidden";
@@ -86,7 +86,11 @@ export default {
         },
 
         async sendUpdates() {
-            await airlinesApi.update(this.idToUpdate, this.flight, this.airline);
+            // this.airlineArray.forEach(e=> {
+            //     e.updateRequired = true;
+            //     e.flight = "1111111111";
+            // });
+            await airlinesApi.update(this.airlineArray);
             this.flight = "";
             this.airline = "";
             document.getElementById("saveBtn")!.style.visibility = "visible";
