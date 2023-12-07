@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using WebAPI.Services;
+using static WebAPI.Controllers.AirlineController;
 
 namespace WebAPI.Controllers
 {
@@ -77,6 +78,34 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpPatch, Route("updatemany")]
+        public async Task<IActionResult> UpdateMany([FromBody] AirLineUpdateManyDto airLineUpdateManyDto)
+        {
+            var airLineUpdateDtos = airLineUpdateManyDto.AirLineUpdateDtos;
+            foreach (var airLineUpdateDto in airLineUpdateDtos)
+            {
+                if (airLineUpdateDto.Id == default || string.IsNullOrWhiteSpace(airLineUpdateDto.Flight) || string.IsNullOrWhiteSpace(airLineUpdateDto.Airline))
+                {
+                    return BadRequest($"Элемент с ID {airLineUpdateDto.Id} не прошел валидацию.");
+                }
+            }
+
+            var airlinesToSave = airLineUpdateDtos.Select(e => new AirLine()
+            {
+                Airline = e.Airline,
+                Flight = e.Flight,
+                Id = e.Id,
+            });
+
+            var result = await airlineService.UpdateManyAsync(airlinesToSave);
+            if (result.Success is false)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
         [HttpGet, Route("export")]
         public async Task<IActionResult> Export()
         {
@@ -93,5 +122,6 @@ namespace WebAPI.Controllers
 
         public record AirLineInsertDto(string Flight, string Airline);
         public record AirLineUpdateDto(int Id, string Flight, string Airline);
+        public record AirLineUpdateManyDto(IEnumerable<AirLineUpdateDto> AirLineUpdateDtos);
     }
 }

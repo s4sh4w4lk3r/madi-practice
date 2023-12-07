@@ -57,5 +57,27 @@ namespace WebAPI.Services
             await stream.SaveAsAsync(airLines);
             return ServiceResult<MemoryStream>.Ok("Поток с экселем записан", stream);
         }
+
+        public async Task<ServiceResult> UpdateManyAsync(IEnumerable<AirLine> airLines)
+        {
+            foreach (var item in airLines)
+            {
+                var trackedAirline = await madiContext.Set<AirLine>().SingleOrDefaultAsync(e => e.Id == item.Id);
+                if (trackedAirline is null)
+                {
+                    return ServiceResult.Fail("Нет записи в бд.");
+                }
+
+                var updatedAt = DateTime.UtcNow;
+                updatedAt = DateTime.SpecifyKind(updatedAt, DateTimeKind.Unspecified);
+
+                trackedAirline.Airline = item.Airline;
+                trackedAirline.Flight = item.Flight;
+                trackedAirline.UpdatedAt = updatedAt;
+            }
+
+            await madiContext.SaveChangesAsync();
+            return ServiceResult.Ok("Обновлено.");
+        }
     }
 }
