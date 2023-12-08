@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Repository;
 using WebAPI.Services;
 
@@ -13,6 +14,11 @@ namespace backend
             builder.Services.AddScoped<MadiContext>();
             builder.Services.AddScoped<AirlineService>();
             builder.Services.AddCors();
+
+/*            builder.Services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });*/
 
             var app = builder.Build();
 

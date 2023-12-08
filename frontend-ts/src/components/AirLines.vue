@@ -104,8 +104,8 @@ export default {
 
         getExcel(){
             window.open(`${hostname}/airlines/export/`, "_blank");
-        }
-        ,
+        },
+        
         changeCell(changedData: Airline, id: number, row: string) {
             console.log(changedData, id, row);
             

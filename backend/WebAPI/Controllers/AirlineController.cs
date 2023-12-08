@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MiniExcelLibs;
 using Repository;
+using System;
+using System.IO;
 using WebAPI.Services;
 using static WebAPI.Controllers.AirlineController;
 
@@ -120,8 +123,19 @@ namespace WebAPI.Controllers
             return File(stream, fileType, fileName);
         }
 
+        [HttpPost, Route("import")]
+        public async Task<IActionResult> Import(IFormFile file)
+        {
+            //using var stream = System.IO.File.OpenRead(@"C:\Users\Admin\Downloads\База от 05.12.2023 10_27_19.xlsx") ;
+
+            using var stream = file.OpenReadStream();
+            var rows = stream.Query().FirstOrDefault();
+            return Ok();
+        }   
+
         public record AirLineInsertDto(string Flight, string Airline);
         public record AirLineUpdateDto(int Id, string Flight, string Airline);
         public record AirLineUpdateManyDto(IEnumerable<AirLineUpdateDto> AirLineUpdateDtos);
+        public record AirLineInsertManyDto(IEnumerable<AirLineInsertDto> AirLineInsertDtos);
     }
 }

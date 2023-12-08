@@ -79,5 +79,26 @@ namespace WebAPI.Services
             await madiContext.SaveChangesAsync();
             return ServiceResult.Ok("Обновлено.");
         }
+
+        public async Task<ServiceResult> ImportAsync(IEnumerable<AirLine> airLines)
+        {
+            if (airLines is null || !airLines.Any())
+            {
+                return ServiceResult.Fail("Получен пустой массив данных.");
+            }
+            var airLinesList = airLines.Where(e => e.Id != default && !string.IsNullOrWhiteSpace(e.Airline) && !string.IsNullOrWhiteSpace(e.Flight)).ToList();
+            await madiContext.Set<AirLine>().ForEachAsync(e =>
+            {
+                var current = airLinesList.SingleOrDefault(x => x.Id == e.Id);
+                if (current is not null)
+                {
+                    airLinesList.Remove(current);
+                }
+            });
+
+            await madiContext.Set<AirLine>().AddRangeAsync(airLinesList);
+            await madiContext.SaveChangesAsync();
+            return ServiceResult.Ok("Все сохранилось норм.");
+        }
     }
 }
