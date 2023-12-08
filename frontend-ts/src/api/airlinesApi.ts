@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://localhost:5111";
+export const host = "http://localhost:5111";
 
 export class Airline {
     constructor(public readonly id: number, public flight: string, public airline: string, public createdAt?: string, public updatedAt?: string, public updateRequired: boolean = true) { }

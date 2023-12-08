@@ -12,10 +12,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in airlineArray">
+            <tr v-for="item in airlineArray" @change="changeCell(item, 123, '')">
                 <td>{{ item.id }}</td>
-                <td>{{ item.flight }}</td>
-                <td>{{ item.airline }}</td>
+                <td contenteditable>{{ item.flight }}</td>
+                <td contenteditable>{{ item.airline }}</td>
                 <td>{{ new Date(Date.parse(item.createdAt!)).toLocaleString("RU-ru") }}</td>
                 <td>{{ new Date(Date.parse(item.updatedAt!)).toLocaleString("RU-ru") }}</td>
                 <td> <input type="button" @click="remove(item.id)" value="❌" required></td>
@@ -35,14 +35,16 @@
             <button id="saveBtn" @click="save">Добавить в базу данных</button>
             <br>
             <button id="updateBtn" @click="sendUpdates">Сохранить изменения</button>
+            <br>
+            <button id="exportBtn" @click="getExcel">Экспорт в Excel</button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Airline, airlinesApi } from "../api/airlinesApi"
+import { Airline, airlinesApi, host as hostname } from "../api/airlinesApi"
 
-type DataReturnType =  {flight:string, airline: string, airlineArray: Airline[], idToUpdate: number};
+type DataReturnType = { flight: string, airline: string, airlineArray: Airline[], idToUpdate: number };
 
 export default {
     data(): DataReturnType {
@@ -90,14 +92,24 @@ export default {
             //     e.updateRequired = true;
             //     e.flight = "1111111111";
             // });
-            await airlinesApi.update(this.airlineArray);
+            await airlinesApi.updateOne(this.idToUpdate, this.flight, this.airline);
             this.flight = "";
             this.airline = "";
             document.getElementById("saveBtn")!.style.visibility = "visible";
             document.getElementById("loadBtn")!.style.visibility = "visible";
             document.getElementById("updateBtn")!.style.visibility = "hidden";
             await this.load();
+        },
+
+
+        getExcel(){
+            window.open(`${hostname}/airlines/export/`, "_blank");
         }
+        ,
+        changeCell(changedData: Airline, id: number, row: string) {
+            console.log(changedData, id, row);
+            
+        },
     }
 }
 </script>
