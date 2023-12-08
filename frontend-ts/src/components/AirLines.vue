@@ -36,8 +36,14 @@
             <br>
             <button id="updateBtn" @click="sendUpdates">Сохранить изменения</button>
             <br>
-            <button id="exportBtn" @click="getExcel">Экспорт в Excel</button>
         </div>
+
+        <div class="excelButtons">
+            <button id="exportBtn" @click="getExcel">Экспорт в Excel</button>
+            <br>
+            <input id="importBtn" type="file" name="importBtin" @change="importExcel">
+        </div>
+
     </div>
 </template>
 
@@ -102,14 +108,22 @@ export default {
         },
 
 
-        getExcel(){
+        getExcel() {
             window.open(`${hostname}/airlines/export/`, "_blank");
         },
-        
+
         changeCell(changedData: Airline, id: number, row: string) {
             console.log(changedData, id, row);
-            
+
         },
+
+        async importExcel(event: Event) {
+            const target = event.target as HTMLInputElement;
+            const file: File = (target.files as FileList)[0];
+            await airlinesApi.importExcel(file);
+            alert("OK");
+            this.load();
+        }
     }
 }
 </script>

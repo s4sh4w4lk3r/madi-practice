@@ -62,5 +62,20 @@ export const airlinesApi = {
         if (result.status !== 200) {
             console.error(result.data);
         }
+    },
+
+    async importExcel(file: File) {
+        const formData = new FormData();
+        formData.append("formFile", file);
+        const result = await axios.post(`${host}/airlines/import`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        if (result.status !== 200) {
+            return Promise.resolve();
+        }
+        else Promise.resolve(result.data)
     }
 }
