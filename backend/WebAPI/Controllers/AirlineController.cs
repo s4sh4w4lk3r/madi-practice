@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete, Route("delete")]
-        public async Task<IActionResult> Delete([FromQuery]int id)
+        public async Task<IActionResult> Delete([FromQuery] int id)
         {
             if (id == default)
             {
@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
             if (serviceResult.Success is false)
             {
                 return BadRequest(serviceResult);
-            } 
+            }
             return Ok(serviceResult);
         }
 
@@ -124,14 +124,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost, Route("import")]
-        public async Task<IActionResult> Import(IFormFile file)
+        public async Task<IActionResult> Import(IFormFile formFile)
         {
-            //using var stream = System.IO.File.OpenRead(@"C:\Users\Admin\Downloads\База от 05.12.2023 10_27_19.xlsx") ;
+            var airlnes = formFile.OpenReadStream().Query<AirLine>();
+            var result = await airlineService.ImportExcelAsync(airlnes);
 
-            using var stream = file.OpenReadStream();
-            var rows = stream.Query().FirstOrDefault();
+            if (result.Success is false)
+            {
+                return BadRequest(result);
+            }
             return Ok();
-        }   
+        }
 
         public record AirLineInsertDto(string Flight, string Airline);
         public record AirLineUpdateDto(int Id, string Flight, string Airline);

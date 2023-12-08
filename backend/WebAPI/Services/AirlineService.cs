@@ -80,7 +80,7 @@ namespace WebAPI.Services
             return ServiceResult.Ok("Обновлено.");
         }
 
-        public async Task<ServiceResult> ImportAsync(IEnumerable<AirLine> airLines)
+        public async Task<ServiceResult> ImportExcelAsync(IEnumerable<AirLine> airLines)
         {
             if (airLines is null || !airLines.Any())
             {

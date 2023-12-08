@@ -15,11 +15,6 @@ namespace backend
             builder.Services.AddScoped<AirlineService>();
             builder.Services.AddCors();
 
-/*            builder.Services.Configure<KestrelServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            });*/
-
             var app = builder.Build();
 
             using (var db = app.Services.CreateScope().ServiceProvider.GetRequiredService<MadiContext>())
