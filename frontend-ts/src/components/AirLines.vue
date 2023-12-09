@@ -74,13 +74,12 @@ export default {
         },
 
         async load() {
-            const result = await airlinesApi.getAirlines();
-            this.airlineArray = result;
+            this.airlineArray = await airlinesApi.getAirlines();
         },
 
         async remove(id: number) {
             await airlinesApi.deleteById(id);
-            this.load();
+            await this.load();
         },
 
         fillFields(airline: Airline) {
@@ -122,7 +121,7 @@ export default {
             const file: File = (target.files as FileList)[0];
             await airlinesApi.importExcel(file);
             alert("OK");
-            this.load();
+            await this.load();
         }
     }
 }
