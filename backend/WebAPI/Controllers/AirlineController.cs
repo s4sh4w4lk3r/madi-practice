@@ -126,7 +126,8 @@ namespace WebAPI.Controllers
         [HttpPost, Route("import")]
         public async Task<IActionResult> Import(IFormFile formFile)
         {
-            var airlnes = formFile.OpenReadStream().Query<AirLine>();
+            using var stream = formFile.OpenReadStream();
+            var airlnes = stream.Query<AirLine>();
             var result = await airlineService.ImportExcelAsync(airlnes);
 
             if (result.Success is false)
