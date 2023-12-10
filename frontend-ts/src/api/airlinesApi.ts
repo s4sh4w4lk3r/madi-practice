@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const host = "http://localhost:5111";
 
+const api = axios.create({baseURL: host})
 export class Airline {
     constructor(public readonly id: number, public flight: string, public airline: string, public createdAt?: string, public updatedAt?: string, public updateRequired: boolean = true) { }
 }
@@ -11,7 +12,7 @@ export const airlinesApi = {
         const dto = { Flight: flightName, Airline: airlineName }
 
         try {
-            await axios.post(`${host}/airlines/insert`, dto);
+            await api.post(`/airlines/insert`, dto);
             alert("OK");
         } catch (error) {
             console.error(error);
@@ -20,7 +21,7 @@ export const airlinesApi = {
 
     async getAirlines() {
         try {
-            const result: Airline[] = (await axios.get(`${host}/airlines/get`)).data as Airline[];
+            const result: Airline[] = (await api.get(`/airlines/get`)).data as Airline[];
             result.forEach(e => e.updateRequired = false)
             return Promise.resolve(result);
 
@@ -32,7 +33,7 @@ export const airlinesApi = {
 
     async deleteById(id: number) {
         try {
-            const result = await axios.delete(`${host}/airlines/delete?id=${id}`);
+            const result = await api.delete(`/airlines/delete?id=${id}`);
             if (result.status !== 200) console.error(result.data);
         } catch (error) {
             console.error(error);
@@ -42,7 +43,7 @@ export const airlinesApi = {
     async updateOne(id: number, flightName: string, airlineName: string) {
         const dto = { Id: id, Flight: flightName, Airline: airlineName };
 
-        const result = await axios.patch(`${host}/airlines/update`, dto);
+        const result = await api.patch(`/airlines/update`, dto);
         if (result.status !== 200) {
             console.error(result.data);
         }
@@ -58,7 +59,7 @@ export const airlinesApi = {
             Airline: e.airline
         }));
 
-        const result = await axios.patch(`${host}/airlines/updatemany`, airlinesDtos);
+        const result = await api.patch(`/airlines/updatemany`, airlinesDtos);
         if (result.status !== 200) {
             console.error(result.data);
         }
@@ -67,7 +68,7 @@ export const airlinesApi = {
     async importExcel(file: File) {
         const formData = new FormData();
         formData.append("formFile", file);
-        const result = await axios.post(`${host}/airlines/import`, formData, {
+        const result = await api.post(`/airlines/import`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
