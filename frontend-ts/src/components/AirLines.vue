@@ -16,8 +16,15 @@
                 <td>{{ item.id }}</td>
                 <td contenteditable>{{ item.flight }}</td>
                 <td contenteditable>{{ item.airline }}</td>
-                <td>{{ new Date(Date.parse(item.createdAt!)).toLocaleString("RU-ru") }}</td>
-                <td>{{ new Date(Date.parse(item.updatedAt!)).toLocaleString("RU-ru") }}</td>
+                <td>
+                    <p v-if="item.createdAt">{{ new Date(Date.parse(item.createdAt!)).toLocaleString("RU-ru") }}</p>
+                    <p v-else> Нет данных :(</p>
+                </td>
+                <td>
+                    <p v-if="item.updatedAt">{{ new Date(Date.parse(item.updatedAt!)).toLocaleString("RU-ru") }}</p>
+                    <p v-else> Нет данных :(</p>
+                </td>
+
                 <td> <input type="button" @click="remove(item.id)" value="❌" required></td>
                 <td> <input type="button" @click="fillFields(item)" value="🔧" required></td>
             </tr>
