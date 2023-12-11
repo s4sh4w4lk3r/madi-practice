@@ -32,8 +32,8 @@
             <br>
             <button id="loadBtn" @click="load">Загрузить из бд</button>
             <br>
-            <!-- <button id="saveBtn" @click="save">Добавить в базу данных</button>
-            <br> -->
+            <button id="saveBtn" @click="save">Добавить в базу данных</button>
+            <br>
             <button id="updateBtn" @click="sendUpdates">Сохранить изменения</button>
             <br>
         </div>
@@ -48,24 +48,23 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { Airline, airlinesApi, host as hostname } from "../api/airlinesApi"
 
-type DataReturnType = { flight: string, airline: string, airlineArray: Airline[], idToUpdate: number };
+let flight = ref("");
+let airlineName = ref("");
+let airlineArray: Ref<Airline[]> = ref([]);
 
-let flight = "";
-let airlineName = "";
-let airlineArray: Airline[] = [];
-let idToUpdate = 0;
-// async function save() {
-//     await airlinesApi.save.call(this, flight, airlineName);
-//     await load();
-//     flight = "";
-//     airlineName = "";
-// }
+let idToUpdate = ref(0);
+async function save() {
+    await airlinesApi.save(flight.value, airlineName.value);
+    await load();
+    flight.value = "";
+    airlineName.value = "";
+}
 
 async function load() {
-    airlineArray = await airlinesApi.getAirlines();
+    airlineArray.value = await airlinesApi.getAirlines();
 }
 
 async function remove(id: number) {
@@ -74,9 +73,9 @@ async function remove(id: number) {
 }
 
 function fillFields(airline: Airline) {
-    idToUpdate = airline.id;
-    flight = airline.flight;
-    airlineName = airline.airline;
+    idToUpdate.value = airline.id;
+    flight.value = airline.flight;
+    airlineName.value = airline.airline;
     // Конечно не оч хорошо что оставил здесь воскл. знак.
     document.getElementById("saveBtn")!.style.visibility = "hidden";
     document.getElementById("loadBtn")!.style.visibility = "hidden";
@@ -88,9 +87,9 @@ async function sendUpdates() {
     //     e.updateRequired = true;
     //     e.flight = "1111111111";
     // });
-    await airlinesApi.updateOne(idToUpdate, flight, airlineName);
-    flight = "";
-    airlineName = "";
+    await airlinesApi.updateOne(idToUpdate.value, flight.value, airlineName.value);
+    flight.value = "";
+    airlineName.value = "";
     document.getElementById("saveBtn")!.style.visibility = "visible";
     document.getElementById("loadBtn")!.style.visibility = "visible";
     document.getElementById("updateBtn")!.style.visibility = "hidden";
