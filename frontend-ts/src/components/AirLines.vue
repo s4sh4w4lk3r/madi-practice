@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in airlineArray" @change="changeCell(item, 123, '')">
+            <tr v-for="item in airlineArray">
                 <td>{{ item.id }}</td>
                 <td contenteditable>{{ item.flight }}</td>
                 <td contenteditable>{{ item.airline }}</td>
@@ -28,7 +28,7 @@
         <div>
             <input v-model="flight" type="text" class="flight-input" placeholder="Название рейса">
             <br>
-            <input v-model="airline" type="text" class="airline-input" placeholder="Название авиакомпании">
+            <input v-model="airlineName" type="text" class="airline-input" placeholder="Название авиакомпании">
             <br>
             <button id="loadBtn" @click="load">Загрузить из бд</button>
             <br>
@@ -47,84 +47,73 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import { ref, type Ref } from 'vue'
 import { Airline, airlinesApi, host as hostname } from "../api/airlinesApi"
 
-type DataReturnType = { flight: string, airline: string, airlineArray: Airline[], idToUpdate: number };
+let flight = ref("");
+let airlineName = ref("");
+let airlineArray: Ref<Airline[]> = ref([]);
 
-export default {
-    data(): DataReturnType {
-        return {
-            flight: "",
-            airline: "",
-            airlineArray: [],
-            idToUpdate: 0
-        };
-    },
-
-    mounted() {
-    },
-
-    methods: {
-        async save() {
-            await airlinesApi.save.call(this, this.flight, this.airline);
-            await this.load();
-            this.flight = "";
-            this.airline = "";
-        },
-
-        async load() {
-            this.airlineArray = await airlinesApi.getAirlines();
-        },
-
-        async remove(id: number) {
-            await airlinesApi.deleteById(id);
-            await this.load();
-        },
-
-        fillFields(airline: Airline) {
-            this.idToUpdate = airline.id;
-            this.flight = airline.flight;
-            this.airline = airline.airline;
-            // Конечно не оч хорошо что оставил здесь воскл. знак.
-            document.getElementById("saveBtn")!.style.visibility = "hidden";
-            document.getElementById("loadBtn")!.style.visibility = "hidden";
-            document.getElementById("updateBtn")!.style.visibility = "visible";
-        },
-
-        async sendUpdates() {
-            // this.airlineArray.forEach(e=> {
-            //     e.updateRequired = true;
-            //     e.flight = "1111111111";
-            // });
-            await airlinesApi.updateOne(this.idToUpdate, this.flight, this.airline);
-            this.flight = "";
-            this.airline = "";
-            document.getElementById("saveBtn")!.style.visibility = "visible";
-            document.getElementById("loadBtn")!.style.visibility = "visible";
-            document.getElementById("updateBtn")!.style.visibility = "hidden";
-            await this.load();
-        },
-
-
-        getExcel() {
-            window.open(`${hostname}/airlines/export/`, "_blank");
-        },
-
-        changeCell(changedData: Airline, id: number, row: string) {
-            console.log(changedData, id, row);
-
-        },
-
-        async importExcel(event: Event) {
-            const target = event.target as HTMLInputElement;
-            const file: File = (target.files as FileList)[0];
-            await airlinesApi.importExcel(file);
-            alert("OK");
-            await this.load();
-        }
-    }
+let idToUpdate = ref(0);
+async function save() {
+    await airlinesApi.save(flight.value, airlineName.value);
+    await load();
+    flight.value = "";
+    airlineName.value = "";
 }
+
+async function load() {
+    airlineArray.value = await airlinesApi.getAirlines();
+}
+
+async function remove(id: number) {
+    await airlinesApi.deleteById(id);
+    await load();
+}
+
+function fillFields(airline: Airline) {
+    idToUpdate.value = airline.id;
+    flight.value = airline.flight;
+    airlineName.value = airline.airline;
+    // Конечно не оч хорошо что оставил здесь воскл. знак.
+    document.getElementById("saveBtn")!.style.visibility = "hidden";
+    document.getElementById("loadBtn")!.style.visibility = "hidden";
+    document.getElementById("updateBtn")!.style.visibility = "visible";
+}
+
+async function sendUpdates() {
+    // this.airlineArray.forEach(e=> {
+    //     e.updateRequired = true;
+    //     e.flight = "1111111111";
+    // });
+    await airlinesApi.updateOne(idToUpdate.value, flight.value, airlineName.value);
+    flight.value = "";
+    airlineName.value = "";
+    document.getElementById("saveBtn")!.style.visibility = "visible";
+    document.getElementById("loadBtn")!.style.visibility = "visible";
+    document.getElementById("updateBtn")!.style.visibility = "hidden";
+    await load();
+}
+
+
+function getExcel() {
+    window.open(`${hostname}/airlines/export/`, "_blank");
+}
+
+function changeCell(changedData: Airline, id: number, row: string) {
+    console.log(changedData, id, row);
+
+}
+
+async function importExcel(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+    await airlinesApi.importExcel(file);
+    alert("OK");
+    await load();
+}
+
 </script>
 
 <style>
