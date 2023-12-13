@@ -17,10 +17,12 @@
                 <td contenteditable>{{ item.flight }}</td>
                 <td contenteditable>{{ item.airline }}</td>
                 <td>
-                    <p>{{ item.createdAt ? new Date(Date.parse(item.createdAt!)).toLocaleString("RU-ru") : "Нет даты :("  }}</p>
+                    <p>{{ item.createdAt ? new Date(Date.parse(item.createdAt!)).toLocaleString("RU-ru") : "Нет даты :(" }}
+                    </p>
                 </td>
                 <td>
-                    <p>{{ item.updatedAt ? new Date(Date.parse(item.updatedAt!)).toLocaleString("RU-ru") : "Нет даты :("  }}</p>
+                    <p>{{ item.updatedAt ? new Date(Date.parse(item.updatedAt!)).toLocaleString("RU-ru") : "Нет даты :(" }}
+                    </p>
                 </td>
 
                 <td> <input type="button" @click="remove(item.id)" value="❌" required></td>
@@ -53,8 +55,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type Ref } from 'vue'
+import { ref, type Ref, onMounted } from 'vue'
 import { Airline, airlinesApi, host as hostname } from "../api/airlinesApi"
+
+onMounted(() => {
+    load();
+})
 
 let flight = ref("");
 let airlineName = ref("");
