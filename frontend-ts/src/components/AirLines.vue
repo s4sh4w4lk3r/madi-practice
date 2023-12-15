@@ -60,6 +60,8 @@ import { Airline, airlinesApi, host as hostname } from "../api/airlinesApi"
 
 onMounted(() => {
     load();
+    const el = document.getElementById("updateBtn") as HTMLElement;
+    el.style.visibility = "hidden";
 })
 
 let flight = ref("");
@@ -68,6 +70,10 @@ let airlineArray: Ref<Airline[]> = ref([]);
 
 let idToUpdate = ref(0);
 async function save() {
+    if (!flight.value || !airlineName.value){
+        alert("Ошибка ввода!");
+        return;
+    }
     await airlinesApi.save(flight.value, airlineName.value);
     await load();
     flight.value = "";
