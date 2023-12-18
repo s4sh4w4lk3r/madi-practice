@@ -27,6 +27,7 @@ namespace backend
             .AllowAnyMethod()
             .AllowAnyHeader());
 
+            app.UseStaticFiles();
             app.MapControllers();
 
             app.Run();
