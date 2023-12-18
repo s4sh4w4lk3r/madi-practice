@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Repository;
 
-public partial class Migration
+public partial class MigrationLaravel
 {
     public int Id { get; set; }
 

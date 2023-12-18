@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Repository.Models;
 
 namespace Repository;
 
@@ -14,7 +15,7 @@ public partial class MadiContext() : DbContext
 
     public virtual DbSet<FormAbi> FormAbis { get; set; }
 
-    public virtual DbSet<Migration> Migrations { get; set; }
+    public virtual DbSet<MigrationLaravel> Migrations { get; set; }
 
     public virtual DbSet<PasswordReset> PasswordResets { get; set; }
 
@@ -31,6 +32,7 @@ public partial class MadiContext() : DbContext
     public virtual DbSet<TypeTicket> TypeTickets { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<FileRepo> FileRepos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=one10;User Id=postgres;Password=root;");
@@ -148,7 +150,7 @@ public partial class MadiContext() : DbContext
             entity.Property(e => e.Year).HasColumnName("year");
         });
 
-        modelBuilder.Entity<Migration>(entity =>
+        modelBuilder.Entity<MigrationLaravel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("migrations_pkey");
 
@@ -403,6 +405,11 @@ public partial class MadiContext() : DbContext
                         j.IndexerProperty<long>("UserId").HasColumnName("user_id");
                         j.IndexerProperty<long>("RoleId").HasColumnName("role_id");
                     });
+        });
+
+        modelBuilder.Entity<FileRepo>(entity =>
+        {
+            entity.HasIndex(e => e.Path).IsUnique();
         });
 
         OnModelCreatingPartial(modelBuilder);

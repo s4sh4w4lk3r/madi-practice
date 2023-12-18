@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Repository;
 using WebAPI.Services;
 
@@ -13,21 +12,22 @@ namespace backend
             builder.Services.AddControllers();
             builder.Services.AddScoped<MadiContext>();
             builder.Services.AddScoped<AirlineService>();
+            builder.Services.AddScoped<FileService>();
             builder.Services.AddCors();
 
             var app = builder.Build();
 
-            using (var db = app.Services.CreateScope().ServiceProvider.GetRequiredService<MadiContext>())
+/*            using (var db = app.Services.CreateScope().ServiceProvider.GetRequiredService<MadiContext>())
             {
                 db.Database.EnsureCreated();
-            }
+            }*/
 
             app.UseCors(builder => builder
             .WithOrigins("http://localhost:5173")
             .AllowAnyMethod()
             .AllowAnyHeader());
 
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
             app.MapControllers();
 
             app.Run();

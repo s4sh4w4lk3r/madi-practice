@@ -2,10 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MiniExcelLibs;
 using Repository;
-using System;
-using System.IO;
 using WebAPI.Services;
-using static WebAPI.Controllers.AirlineController;
 
 namespace WebAPI.Controllers
 {
