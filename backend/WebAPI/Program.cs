@@ -14,6 +14,7 @@ namespace backend
             builder.Services.AddScoped<AirlineService>();
             builder.Services.AddScoped<FileService>();
             builder.Services.AddCors();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -27,9 +28,9 @@ namespace backend
             .AllowAnyMethod()
             .AllowAnyHeader());
 
-            //app.UseStaticFiles();
+            app.UseSwaggerUI();
             app.MapControllers();
-
+            app.UseSwagger();
             app.Run();
         }
     }
