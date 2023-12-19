@@ -23,5 +23,5 @@ public partial class Application
 
     public DateTime? DeletedAt { get; set; }
 
-    public virtual ICollection<File> Files { get; set; } = new List<File>();
+    public virtual ICollection<FileLaravel> Files { get; set; } = new List<FileLaravel>();
 }

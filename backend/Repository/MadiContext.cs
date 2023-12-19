@@ -11,7 +11,7 @@ public partial class MadiContext() : DbContext
 
     public virtual DbSet<FailedJob> FailedJobs { get; set; }
 
-    public virtual DbSet<File> Files { get; set; }
+    public virtual DbSet<FileLaravel> Files { get; set; }
 
     public virtual DbSet<FormAbi> FormAbis { get; set; }
 
@@ -84,7 +84,7 @@ public partial class MadiContext() : DbContext
                 .HasColumnName("uuid");
         });
 
-        modelBuilder.Entity<File>(entity =>
+        modelBuilder.Entity<FileLaravel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("files_pkey");
 

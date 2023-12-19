@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Repository;
 
-public partial class File
+public partial class FileLaravel
 {
     public long Id { get; set; }
 

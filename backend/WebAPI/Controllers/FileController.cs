@@ -20,5 +20,19 @@ namespace WebAPI.Controllers
 
         [HttpGet, Route("getall")]
         public async Task<IActionResult> GetFileList() => Ok(await fileService.GetFileList());
+
+        [HttpPost, Route("add")]
+        public async Task<IActionResult> AddFile(IFormFile formFile, string dirToSave = "")
+        {
+            string mimeType = formFile.ContentType;
+            string fileName = formFile.FileName;
+            var stream = formFile.OpenReadStream();
+            var result = await fileService.AddFile(stream, dirToSave, fileName, mimeType);
+            if (result.Success is false)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 }
