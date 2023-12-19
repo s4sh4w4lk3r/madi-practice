@@ -13,5 +13,9 @@ export const api = {
 
     async getFileById(id: number) {
         return await ky.get(`get?id=${id}`).blob(); 
+    },
+
+    async deleteById(id: number) {
+        return await ky.delete(`del?id=${id}`);
     }
 }

@@ -16,8 +16,8 @@
                 <td>{{ item.id }}</td>
                 <td>{{ item.filename }}</td>
                 <td>{{ item.path }}</td>
-                <td><button type="button" @click="download(item.id)">Download</button></td>
-                <td><button type="button">Delete</button></td>
+                <td><button type="button" @click="downloadById(item.id)">Download</button></td>
+                <td><button type="button" @click="filesApi.deleteById(item.id)">Delete</button></td>
             </tr>
         </tbody>
     </table>
@@ -34,13 +34,13 @@ onMounted(() => {
     fetchAndPrint();
 });
 
-async function download(id: number) {
+async function downloadById(id: number) {
     const data = await filesApi.getFileById(id);
     startBlobDownloading(data);
 }
 
 async function fetchAndPrint() {
-    filesList.value = await filesApi.getList()
+    filesList.value = await filesApi.getList();
 }
 
 function startBlobDownloading(blob: Blob): void {
@@ -55,6 +55,7 @@ function startBlobDownloading(blob: Blob): void {
     document.body.removeChild(a);
     URL.revokeObjectURL(objectUrl);
 }
+
 </script>
 
 <style scoped>
