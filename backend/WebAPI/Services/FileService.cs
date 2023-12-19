@@ -54,5 +54,26 @@ namespace WebAPI.Services
 
             return ServiceResult.Ok("Файл сохранен.");
         }
+
+        public async Task<ServiceResult> DeleteFileById(int id)
+        {
+            var fileToDel = await madiContext.FileRepos.SingleOrDefaultAsync(e => e.Id == id);
+            if (fileToDel is null) 
+            {
+                return ServiceResult.Fail("Нет такого файла.");
+            }
+
+            string finalPath = Path.Combine("wwwroot", fileToDel.Path);
+            if (File.Exists(finalPath) is false)
+            {
+                return ServiceResult.Fail("Несоотв. базы данных с каталогом файлов");
+            }
+
+            File.Delete(finalPath);
+            madiContext.FileRepos.Remove(fileToDel);
+            await madiContext.SaveChangesAsync();
+            return ServiceResult.Ok("Файл удален.");
+
+        }
     }
 }

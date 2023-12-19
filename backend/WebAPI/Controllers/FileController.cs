@@ -34,5 +34,17 @@ namespace WebAPI.Controllers
             }
             return Ok(result);
         }
+
+        [HttpDelete, Route("del")]
+        public async Task<IActionResult> DeleteFile(int id)
+        {
+            var result = await fileService.DeleteFileById(id);
+            if (result.Success is false)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }
