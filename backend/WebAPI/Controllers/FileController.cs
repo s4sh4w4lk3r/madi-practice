@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
                 return NotFound(result);
             }
 
-            return File(result.Value.Path, result.Value.MimeType);
+            return File(result.Value.Path, result.Value.MimeType, fileDownloadName: result.Value.Filename);
         }
 
         [HttpGet, Route("getall")]

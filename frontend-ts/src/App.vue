@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import AirLinesVue from './components/AirLines.vue';
+import FileRepoVue from './components/FileRepo.vue';
+
 </script>
 
 <template>
   <main>
-    <AirLinesVue/>
+    <FileRepoVue/>
   </main>
 </template>
