@@ -1,12 +1,12 @@
 import kyBase from "ky";
 const ky = kyBase.create({ prefixUrl: "http://localhost:5111/filerepo/" });
 
-class FileInfo {
+export class FileInfo {
     constructor(public id: number, public filename: string,
         public path: string, public MimeType: string) { }
 }
 
-export default {
+export const api = {
     async getList() {
         return await ky.get("getall").json<FileInfo[]>(); 
     },
