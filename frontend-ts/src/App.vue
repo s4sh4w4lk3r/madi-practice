@@ -8,3 +8,9 @@ import FileRepoVue from './components/FileRepo.vue';
     <FileRepoVue/>
   </main>
 </template>
+
+<style>
+*{
+  margin: 0;
+}
+</style>
