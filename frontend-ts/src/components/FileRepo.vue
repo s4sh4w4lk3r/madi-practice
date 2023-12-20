@@ -1,34 +1,41 @@
 <template>
     <main>
         <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Имя</th>
-                <th>Путь</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Имя</th>
+                    <th>Путь</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
 
-        <tbody>
-            <tr v-for="item in filesList">
-                <td>{{ item.id }}</td>
-                <td>{{ item.filename }}</td>
-                <td>{{ item.path }}</td>
-                <td><button type="button" @click="downloadById(item.id)">Download</button></td>
-                <td><button type="button" @click="filesApi.deleteById(item.id)">Delete</button></td>
-            </tr>
-        </tbody>
-    </table>
-</main>
+            <tbody>
+                <tr v-for="item in filesList">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.filename }}</td>
+                    <td>{{ item.path }}</td>
+                    <td><button class="table-button" type="button" @click="downloadById(item.id)">Download</button></td>
+                    <td><button class="table-button" type="button" @click="deleteByIdAndPrint(item.id)">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="uploadDiv">
+            <input id="fileInput" type="file" />
+            <input class="textbox" v-model="dirToSave" type="text" placeholder="Введите дерикторию">
+            <button type="button" @click="getAndUploadFile">Отправить</button>
+        </div>
+    </main>
 </template>
 
 <script setup lang="ts">
 import { api as filesApi, FileInfo } from '@/api/filesApi';
 import { onMounted, ref } from 'vue';
 
-const filesList = ref<FileInfo[]>();
+const filesList = ref<FileInfo[]>([]);
+const dirToSave = ref<string>("");
 
 onMounted(() => {
     fetchAndPrint();
@@ -43,12 +50,16 @@ async function fetchAndPrint() {
     filesList.value = await filesApi.getList();
 }
 
+async function deleteByIdAndPrint(id: number) {
+    await filesApi.deleteById(id);
+    await fetchAndPrint();
+}
+
 function startBlobDownloading(blob: Blob): void {
     const objectUrl: string = URL.createObjectURL(blob);
     const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
 
     a.href = objectUrl;
-    // a.download = ;
     document.body.appendChild(a);
     a.click();
 
@@ -56,11 +67,19 @@ function startBlobDownloading(blob: Blob): void {
     URL.revokeObjectURL(objectUrl);
 }
 
+async function getAndUploadFile() {
+    const el = document.getElementById("fileInput") as HTMLInputElement;
+    const file: File = (el.files as FileList)[0];
+    await filesApi.uploadFile(file, dirToSave.value);
+    await fetchAndPrint();
+    alert("OK");
+}
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-main{
+main {
     background-color: black;
     color: white;
     height: 100vh;
@@ -68,10 +87,12 @@ main{
     background-color: black;
 }
 
-th,
-td,
+
+
 table {
     border: 1px solid;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 5px;
 }
 
 th,
@@ -79,7 +100,7 @@ td {
     padding: 10px;
 }
 
-button{
+button {
     height: 33px;
     width: 100px;
     padding: 10px;
@@ -89,4 +110,31 @@ button{
     border-style: none;
 }
 
+button:hover {
+    background-color: gray;
+}
+
+.uploadDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 300px;
+    margin-top: 30px;
+    margin-left: 10px;
+    padding: 5px;
+
+    .textbox {
+        width: 250px;
+        padding: 9px;
+        border-radius: 5px;
+        box-shadow: none;
+        background-color: white;
+        border-style: none;
+    }
+    
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    border-radius: 5px;
+}
 </style>
