@@ -14,6 +14,7 @@ namespace WebAPI.Services
             foreach (var item in list)
             {
                 item.Path = item.Path.Replace("Files\\", "/");
+                item.Path = item.Path.Replace("\\", "/");
             }
             return list;
         }
@@ -31,6 +32,7 @@ namespace WebAPI.Services
 
         public async Task<ServiceResult> AddFile(Stream stream, string dirToSave, string filename, string mimeType, bool overwrite = false)
         {
+            Directory.CreateDirectory(Path.Combine("wwwroot", "Files", dirToSave));
             string path = Path.Combine("Files", dirToSave, filename);
             string fullPath = Path.Combine("wwwroot", "Files", dirToSave, filename);
             if ((File.Exists(fullPath) is true) && (overwrite is false))

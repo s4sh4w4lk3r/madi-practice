@@ -73,18 +73,21 @@ async function getAndUploadFile() {
     await filesApi.uploadFile(file, dirToSave.value);
     await fetchAndPrint();
     alert("OK");
+    location.reload();
 }
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-main {
-    background-color: black;
+main {  
     color: white;
     height: 100vh;
     width: 100vw;
-    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black
 }
 
 
@@ -93,6 +96,8 @@ table {
     border: 1px solid;
     font-family: 'Roboto', sans-serif;
     border-radius: 5px;
+    min-width: 35%;
+    margin-top: 15px
 }
 
 th,
@@ -119,10 +124,8 @@ button:hover {
     flex-direction: column;
     gap: 5px;
     width: 300px;
-    margin-top: 30px;
-    margin-left: 10px;
     padding: 5px;
-
+    margin: 10px;
     .textbox {
         width: 250px;
         padding: 9px;

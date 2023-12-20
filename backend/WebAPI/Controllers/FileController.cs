@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetFileList() => Ok(await fileService.GetFileList());
 
         [HttpPost, Route("add")]
-        public async Task<IActionResult> AddFile(IFormFile formFile, string dirToSave = "")
+        public async Task<IActionResult> AddFile(IFormFile formFile, [FromForm] string dirToSave = "")
         {
             string mimeType = formFile.ContentType;
             string fileName = formFile.FileName;
